@@ -10,11 +10,6 @@
 @foreach ($posts as $id => $post)
     <a href="{{ route('posts.show', $id) }}"><h2>{{ $post }}</h2></a>
 
-    <form action="{{ route('posts.destroy', $id) }}" method="POST">
-        @csrf
-        @method('DELETE')
-        <button type="submit">Удалить</button>
-    </form>
 @endforeach
 
 @endsection

@@ -10,5 +10,10 @@
     @endif
 
     <a href="{{ route('posts.edit', $post->id) }}">Изменить</a>
+    <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="submit">Удалить</button>
+    </form>
 
 @endsection
