@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\CategoryPostController;
 use App\Http\Controllers\PostController;
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\TestPostMiddleware;
+use App\Http\Middleware\TestPreMiddleware;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,24 +21,31 @@ Route::get('/', function () {
     return view('layouts.home');
 })->name('home');
 
+Route::prefix('test')->group(function () {
+    Route::get('/', function () {
+        return 'test';
+    });
+});
+
+Route::controller(PostController::class)->group(function () {
 Route::name('posts.')
     ->prefix('posts')
     ->group(function () {
-        Route::get('/', [PostController::class, 'index'])->name('index');
-        Route::get('/{id}', [PostController::class, 'show'])->whereNumber('id')->name('show');
-        Route::get('/create', [PostController::class, 'create'])->name('create');
-        Route::post('/', [PostController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [PostController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [PostController::class, 'update'])->name('update');
-        Route::delete('/{id}', [PostController::class, 'destroy'])->name('destroy');
-        Route::get('/download', [PostController::class, 'download'])->name('download');
+        Route::get('/', 'index')->name('index');
+        Route::get('/{id}', 'show')->whereNumber('id')->name('show');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{id}/edit', 'edit')->name('edit');
+        Route::put('/{id}', 'update')->name('update');
+        Route::delete('/{id}', 'destroy')->name('destroy');
+        Route::get('/download', 'download')->name('download');
     }
-);
-Route::name('categories.')
+);});
+Route::middleware(['test.pre', 'test.post'])->name('categories.')
     ->prefix('categories')
     ->group(function () {
         Route::get('/', [CategoryPostController::class, 'index'])->name('index');
-        Route::get('/{category}', [CategoryPostController::class, 'show'])->name('show');
+        Route::get('/{category}', [CategoryPostController::class, 'show'])->name('show')->withoutMiddleware(['test.pre', 'test.post']);
     }
 );
 //TODO внесите в группу posts

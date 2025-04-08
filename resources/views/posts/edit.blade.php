@@ -15,13 +15,13 @@
         </select>
 
         <label for="title">Название:</label>
-        <input type="text" name="title" maxlength="32" value="{{ old('title, $post->title') }}">
+        <input type="text" name="title" maxlength="32" value="{{ old('title', $post->title) }}">
         @error('title')
         <div style="color:red">{{ $message }}</div>
         @enderror
 
         <label for="content">Описание:</label>
-        <input type="text" name="content" maxlength="255" value="{{ old('content') }}">
+        <input type="text" name="content" maxlength="255" value="{{ old('content', $post->content ) }}">
         @error('content')
         <div style="color:red">{{ $message }}</div>
         @enderror()

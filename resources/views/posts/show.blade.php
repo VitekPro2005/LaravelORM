@@ -8,8 +8,9 @@
     @if ($category)
         <p>Категория: {{ $category->name }}</p>
     @endif
-
+    <p>
     <a href="{{ route('posts.edit', $post->id) }}">Изменить</a>
+    </p>
     <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
         @csrf
         @method('DELETE')

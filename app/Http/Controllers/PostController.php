@@ -44,12 +44,10 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
-        $validated = $request->validated();
-
         DB::table('posts')->insert([
-            'title' => $validated['title'],
-            'category_id' => $validated['category_id'],
-            'content' => $validated['content'],
+            'title' => $request->input('title'),
+            'category_id' =>  $request->input('category_id'),
+            'content' => $request->input('content')
         ]);
 
         return redirect()->route('posts.index');
@@ -72,14 +70,12 @@ class PostController extends Controller
 
     public function update(StorePostRequest $request, int $id)
     {
-        $validated = $request->validated();
-
         DB::table('posts')
             ->where('id', $id)
             ->update([
-                'title' => $validated['title'],
-                'category_id' =>  $validated['category_id'],
-                'content' => $validated['content']
+                'title' => $request->input('title'),
+                'category_id' =>  $request->input('category_id'),
+                'content' => $request->input('content')
             ]);
         return redirect()->route('posts.show', $id);
     }
